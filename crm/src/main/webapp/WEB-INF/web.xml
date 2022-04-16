@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>crm</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!--
+
+    add/create:跳转到添加页，或者打开添加操作的模态窗口
+    save:执行添加操作
+    edit:跳转到修改页，或者打开修改操作的模态窗口
+    update:执行修改操作
+    get:执行查询操作   find/select/query/...
+    特殊操作 login等
+
+
+  -->
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.dwadek.crm.web.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>com.dwadek.crm.web.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+    <url-pattern>*.jsp </url-pattern>
+  </filter-mapping>
+  
+  
+</web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
