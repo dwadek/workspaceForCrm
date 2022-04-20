@@ -10,6 +10,9 @@ public class ActivityRemark {
     private String editFlag;
     private String activityId;
 
+    public ActivityRemark() {
+    }
+
     public ActivityRemark(String id, String noteContent, String createTime, String createBy, String editTime, String editBy, String editFlag, String activityId) {
         this.id = id;
         this.noteContent = noteContent;
