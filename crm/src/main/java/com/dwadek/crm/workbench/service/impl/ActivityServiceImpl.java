@@ -25,7 +25,7 @@ public class ActivityServiceImpl implements ActivityService {
         boolean flag = true;
         int count = activityRemarkDao.saveRemark(ar);
 
-        if(count!=1){
+        if (count != 1) {
             flag = false;
         }
         return flag;
@@ -36,10 +36,17 @@ public class ActivityServiceImpl implements ActivityService {
         boolean flag = true;
         int count = activityRemarkDao.updateRemark(ar);
 
-        if(count!=1){
+        if (count != 1) {
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+
+        List<Activity> aList = activityDao.getActivityListByClueId(clueId);
+        return aList;
     }
 
     @Override

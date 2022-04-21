@@ -35,6 +35,10 @@
     <url-pattern>*.jsp </url-pattern>
   </filter-mapping>
   
+  <listener>
+    <listener-class>com.dwadek.crm.web.listener.SysInitListener</listener-class>
+  </listener>
+  
   
 </web-app>
 
