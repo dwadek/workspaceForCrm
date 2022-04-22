@@ -70,6 +70,17 @@ public class ClueServiceImpl implements ClueService {
     }
 
     @Override
+    public boolean delete(String[] ids) {
+
+        boolean flag = true;
+        int count3 = clueDao.delete(ids);
+        if(count3 != ids.length){
+            flag = false;
+        }
+        return flag;
+    }
+
+    @Override
     public Map<String, Object> getUserListAndClue(String id) {
 
         //取uList

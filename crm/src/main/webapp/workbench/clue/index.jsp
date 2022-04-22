@@ -35,6 +35,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			pickerPosition: "top-left"
 		});
 
+		pageList(1, 5);
 
 		//为创建按钮绑定事件，打开添加操作的模态窗口
 		$("#addBtn").click(function () {
@@ -110,8 +111,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				}
 			})
 		})
-
-		pageList(1, 5);
 
 		//为查询按钮绑定事件，触发线索的pageList方法
 		$("#searchBtn").click(function () {
@@ -251,6 +250,54 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 					}
 				}
 			})
+		})
+		
+		//为删除按钮绑定事件，执行删除操作
+		$("#deleteBtn").click(function () {
+			//找到复选框中所有选✔的复选框的jquery对象
+			var $xz = $("input[name=xz]:checked");
+
+			if ($xz.length == 0) {
+				alert("请选择需要删除的记录");
+				//肯定选了，而且有可能是1条，有可能是多条
+			} else {
+
+				if (confirm("确定删除所选中的记录吗？")) {
+
+					//拼接参数
+					var param = "";
+
+					//将$xz中的每一个dom对象遍历出来，取其value值，就相当于取得了需要删除的记录的id
+					for (var i = 0; i < $xz.length; i++) {
+						param += "id=" + $($xz[i]).val();
+
+						//如果不是最后一个元素，需要在后面追加一个&符
+						if (i < $xz.length - 1) {
+							param += "&";
+						}
+					}
+
+					$.ajax({
+						url: "workbench/clue/delete.do",
+						data: param,
+						type: "post",
+						dataType: "json",
+						success: function (data) {
+							/*
+                            data
+                                {"success":true/false}
+                             */
+							if (data.success) {
+								//删除成功后
+								//回到第一页，维持每页展现的记录数
+								pageList(1,$("#cluePage").bs_pagination('getOption', 'rowsPerPage'));
+							} else {
+								alert("删除线索失败")
+							}
+						}
+					})
+				}
+			}
 		})
 
 

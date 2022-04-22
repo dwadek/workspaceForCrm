@@ -30,7 +30,8 @@ import java.util.Map;
 @WebServlet({"/workbench/clue/getUserList.do", "/workbench/clue/save.do",
         "/workbench/clue/detail.do", "/workbench/clue/getActivityListByClueId.do",
         "/workbench/clue/unbund.do", "/workbench/clue/pageList.do",
-        "/workbench/clue/getUserListAndClue.do","/workbench/clue/update.do"})
+        "/workbench/clue/getUserListAndClue.do","/workbench/clue/update.do",
+        "/workbench/clue/delete.do"})
 public class ClueController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,11 +54,25 @@ public class ClueController extends HttpServlet {
             getUserListAndClue(request, response);
         }else if ("/workbench/clue/update.do".equals(path)) {
             update(request, response);
+        }else if ("/workbench/clue/delete.do".equals(path)) {
+            delete(request, response);
         }
     }
 
+    private void delete(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行线索的删除操作");
+
+        String[] ids = request.getParameterValues("id");
+
+        ClueService cs = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+
+        boolean flag = cs.delete(ids);
+
+        PrintJson.printJsonFlag(response, flag);
+    }
+
     private void update(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("执行线索更细操作");
+        System.out.println("执行线索的更新操作");
 
         String id = request.getParameter("id");
         String fullname = request.getParameter("fullname");
