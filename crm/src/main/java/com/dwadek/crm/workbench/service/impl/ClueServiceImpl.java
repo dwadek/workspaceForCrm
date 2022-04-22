@@ -3,11 +3,13 @@ package com.dwadek.crm.workbench.service.impl;
 import com.dwadek.crm.settings.dao.UserDao;
 import com.dwadek.crm.settings.domain.User;
 import com.dwadek.crm.utils.SqlSessionUtil;
+import com.dwadek.crm.utils.UUIDUtil;
 import com.dwadek.crm.vo.PaginationVO;
 import com.dwadek.crm.workbench.dao.ClueActivityRelationDao;
 import com.dwadek.crm.workbench.dao.ClueDao;
 import com.dwadek.crm.workbench.domain.Activity;
 import com.dwadek.crm.workbench.domain.Clue;
+import com.dwadek.crm.workbench.domain.ClueActivityRelation;
 import com.dwadek.crm.workbench.service.ClueService;
 
 import java.util.HashMap;
@@ -76,6 +78,28 @@ public class ClueServiceImpl implements ClueService {
         int count3 = clueDao.delete(ids);
         if(count3 != ids.length){
             flag = false;
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean bund(String cid, String[] aids) {
+
+        boolean flag = true;
+        ClueActivityRelation car = new ClueActivityRelation();
+
+        for(String aid:aids){
+
+            //取得每一aid和cid做关联
+            car.setId(UUIDUtil.getUUID());
+            car.setClueId(cid);
+            car.setActivityId(aid);
+
+            //添加关联关系表中的记录
+            int count = clueActivityRelationDao.bund(car);
+            if(count!=1){
+                flag=false;
+            }
         }
         return flag;
     }

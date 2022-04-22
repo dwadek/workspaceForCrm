@@ -19,4 +19,6 @@ public interface ClueService {
     boolean update(Clue c);
 
     boolean delete(String[] ids);
+
+    boolean bund(String cid, String[] aids);
 }

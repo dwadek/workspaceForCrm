@@ -50,6 +50,12 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map) {
+        List<Activity> aList = activityDao.getActivityListByNameAndNotByClueId(map);
+        return aList;
+    }
+
+    @Override
     public boolean save(Activity a) {
         boolean flag = true;
 

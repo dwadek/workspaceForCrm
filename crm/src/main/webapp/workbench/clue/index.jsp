@@ -396,13 +396,13 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </head>
 <body>
 
-	<input type="hidden" id="hidden-fullname"/>
-	<input type="hidden" id="hidden-company"/>
-	<input type="hidden" id="hidden-phone"/>
-	<input type="hidden" id="hidden-mphone"/>
-	<input type="hidden" id="hidden-source"/>
-	<input type="hidden" id="hidden-owner"/>
-	<input type="hidden" id="hidden-state"/>
+	<input type="hidden" id="hidden-fullname" />
+	<input type="hidden" id="hidden-company" />
+	<input type="hidden" id="hidden-phone" />
+	<input type="hidden" id="hidden-mphone" />
+	<input type="hidden" id="hidden-source" />
+	<input type="hidden" id="hidden-owner" />
+	<input type="hidden" id="hidden-state" />
 
 
 	<!-- 创建线索的模态窗口 -->
