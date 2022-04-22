@@ -29,7 +29,7 @@ import java.util.Map;
 
 @WebServlet({"/workbench/clue/getUserList.do","/workbench/clue/save.do",
             "/workbench/clue/detail.do","/workbench/clue/getActivityListByClueId.do",
-            "/workbench/clue/unbund.do"})
+            "/workbench/clue/unbund.do","/workbench/clue/pageList.do"})
 public class ClueController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,7 +46,47 @@ public class ClueController extends HttpServlet {
             getActivityListByClueId(request,response);
         }else if ("/workbench/clue/unbund.do".equals(path)) {
             unbund(request,response);
+        }else if ("/workbench/clue/pageList.do".equals(path)) {
+            pageList(request,response);
         }
+    }
+
+    private void pageList(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到线索信息列表的操作（结合条件查询+分页查询）");
+
+       String pageNoStr = request.getParameter("pageNo");
+       String pageSizeStr = request.getParameter("pageSize");
+       String fullname = request.getParameter("fullname");
+       String company = request.getParameter("company");
+       String phone = request.getParameter("phone");
+       String mphone = request.getParameter("mphone");
+       String source = request.getParameter("source");
+       String owner = request.getParameter("owner");
+       String state = request.getParameter("state");
+
+        int pageNo = Integer.valueOf(pageNoStr);
+        int pageSize = Integer.valueOf(pageSizeStr);
+        //计算出略过的记录数
+        int skipCount = (pageNo - 1) * pageSize;
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("fullname",fullname);
+        map.put("company",company);
+        map.put("phone",phone);
+        map.put("mphone",mphone);
+        map.put("source",source);
+        map.put("owner",owner);
+        map.put("state",state);
+        map.put("owner",owner);
+        map.put("pageSize",pageSize);
+        map.put("skipCount",skipCount);
+
+        ClueService cs = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+
+        PaginationVO<Clue> vo = cs.pageList(map);
+
+        PrintJson.printJsonObj(response,vo);
+
     }
 
     private void unbund(HttpServletRequest request, HttpServletResponse response) {
