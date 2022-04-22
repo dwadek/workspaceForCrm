@@ -13,4 +13,8 @@ public interface ClueService {
     boolean unbund(String id);
 
     PaginationVO<Clue> pageList(Map<String, Object> map);
+
+    Map<String, Object> getUserListAndClue(String id);
+
+    boolean update(Clue c);
 }
