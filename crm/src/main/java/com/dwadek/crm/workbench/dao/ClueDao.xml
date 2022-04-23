@@ -5,6 +5,12 @@
 
 <mapper namespace="com.dwadek.crm.workbench.dao.ClueDao">
 
+    <delete id="delete1">
+
+        delete from tbl_clue where id=#{id}
+
+    </delete>
+
     <delete id="delete">
         delete from tbl_clue
 

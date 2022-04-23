@@ -56,6 +56,13 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public List<Activity> getActivityListByName(String aname) {
+
+        List<Activity> aList = activityDao.getActivityListByName(aname);
+        return aList;
+    }
+
+    @Override
     public boolean save(Activity a) {
         boolean flag = true;
 
