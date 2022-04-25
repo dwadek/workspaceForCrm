@@ -5,6 +5,80 @@
 
 <mapper namespace="com.dwadek.crm.workbench.dao.ContactsDao">
 
+    <select id="getContactsListByCondition" resultType="Contacts">
+        select
+
+        c.fullname,
+        u.name as owner,
+        c1.name as name,
+        c.birth,
+        c.source
+
+        from tbl_contacts c
+        join tbl_user u
+        on c.owner = u.id
+        join tbl_customer c1
+        on c.customerId = c1.id
+
+        <where>
+            <if test="fullname!=null and fullname!=''">
+                c.fullname like '%' #{fullname} '%'
+            </if>
+
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+
+            <if test="name!=null and name!=''">
+                and c1.name like '%' #{name} '%'
+            </if>
+
+            <if test="birth!=null and birth!=''">
+                and c.birth like '%' #{birth} '%'
+            </if>
+
+            <if test="source!=null and source!=''">
+                and c.source=#{source}
+            </if>
+
+
+        </where>
+    </select>
+
+
+    <select id="getTotalByCondition" resultType="int">
+        select count(*)
+
+        from tbl_contacts c
+        join tbl_user u
+        join tbl_customer c1
+        on c.owner = u.id and c.customerId = c1.id
+
+        <where>
+            <if test="fullname!=null and fullname!=''">
+                c.fullname like '%' #{fullname} '%'
+            </if>
+
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+
+            <if test="name!=null and name!=''">
+                and c1.name like '%' #{name} '%'
+            </if>
+
+            <if test="birth!=null and birth!=''">
+                and c.birth like '%' #{birth} '%'
+            </if>
+
+            <if test="source!=null and source!=''">
+                and c.source=#{source}
+            </if>
+
+
+        </where>
+    </select>
+
     <insert id="save">
 
         insert into tbl_contacts(

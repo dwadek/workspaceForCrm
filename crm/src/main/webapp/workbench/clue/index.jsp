@@ -702,7 +702,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">名称</div>
-				      <input class="form-control" type="text" id="search-fullname" value="马"/>
+				      <input class="form-control" type="text" id="search-fullname"/>
 				    </div>
 				  </div>
 
@@ -814,7 +814,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				</table>
 			</div>
 
-			<div style="height: 50px; position: relative;top: 60px;">
+			<div style="height: 50px; position: relative;top: 60px;" >
 				<div id="cluePage">
 
 				</div>
