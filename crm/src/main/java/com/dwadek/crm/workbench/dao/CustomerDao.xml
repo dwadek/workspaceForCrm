@@ -5,6 +5,10 @@
 
 <mapper namespace="com.dwadek.crm.workbench.dao.CustomerDao">
 
+    <select id="getCustomerByName1" resultType="String">
+        select name from tbl_customer where name like '%' #{name} '%'
+    </select>
+
     <insert id="save">
         insert into tbl_customer(
 

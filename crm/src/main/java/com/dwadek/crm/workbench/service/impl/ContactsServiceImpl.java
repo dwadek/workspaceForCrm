@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class ContactsServiceImpl implements ContactsService {
 
-    ContactsDao contactsDao = SqlSessionUtil.getSqlSession().getMapper(ContactsDao.class);
-    CustomerDao customerDao = SqlSessionUtil.getSqlSession().getMapper(CustomerDao.class);
+    private ContactsDao contactsDao = SqlSessionUtil.getSqlSession().getMapper(ContactsDao.class);
+    private CustomerDao customerDao = SqlSessionUtil.getSqlSession().getMapper(CustomerDao.class);
 
     @Override
     public PaginationVO<Contacts> pageList(Map<String, Object> map) {
