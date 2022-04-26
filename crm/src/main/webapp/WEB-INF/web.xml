@@ -38,6 +38,9 @@
   <listener>
     <listener-class>com.dwadek.crm.web.listener.SysInitListener</listener-class>
   </listener>
+  <!--<listener>
+    <listener-class>com.dwadek.crm.web.listener.MyContextListener</listener-class>
+  </listener>-->
   
   
 </web-app>
