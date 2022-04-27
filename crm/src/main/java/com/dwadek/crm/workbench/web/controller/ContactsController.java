@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet({"/workbench/contacts/pageList.do","/workbench/contacts/getUserList.do",
-        "/workbench/contacts/save.do"})
+        "/workbench/contacts/save.do","/workbench/contacts/getUserListAndContacts.do"})
 public class ContactsController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,8 +40,18 @@ public class ContactsController extends HttpServlet {
             getUserList(request,response);
         }else if("/workbench/contacts/save.do".equals(path)){
             save(request,response);
+        }else if("/workbench/contacts/getUserListAndContacts.do".equals(path)){
+            getUserListAndContacts(request,response);
         }
 
+    }
+
+    private void getUserListAndContacts(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+
+        ContactsService cs = (ContactsService) ServiceFactory.getService(new ContactsServiceImpl());
+        Map<String,Object> map = cs.getUserListAndContacts(id);
+        PrintJson.printJsonObj(response,map);
     }
 
     private void save(HttpServletRequest request, HttpServletResponse response) {

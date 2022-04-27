@@ -1,5 +1,7 @@
 package com.dwadek.crm.workbench.service.impl;
 
+import com.dwadek.crm.settings.dao.UserDao;
+import com.dwadek.crm.settings.domain.User;
 import com.dwadek.crm.utils.SqlSessionUtil;
 import com.dwadek.crm.vo.PaginationVO;
 import com.dwadek.crm.workbench.dao.ContactsDao;
@@ -9,6 +11,7 @@ import com.dwadek.crm.workbench.domain.Contacts;
 import com.dwadek.crm.workbench.domain.ContactsWithCname;
 import com.dwadek.crm.workbench.service.ContactsService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +19,8 @@ public class ContactsServiceImpl implements ContactsService {
 
     private ContactsDao contactsDao = SqlSessionUtil.getSqlSession().getMapper(ContactsDao.class);
     private CustomerDao customerDao = SqlSessionUtil.getSqlSession().getMapper(CustomerDao.class);
+
+    private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
 
     @Override
     public PaginationVO<ContactsWithCname> pageList(Map<String, Object> map) {
@@ -46,5 +51,18 @@ public class ContactsServiceImpl implements ContactsService {
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndContacts(String id) {
+
+        List<User> uList = userDao.getUserList();
+        Contacts con = contactsDao.getById(id);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("uList",uList);
+        map.put("con",con);
+
+        return map;
     }
 }

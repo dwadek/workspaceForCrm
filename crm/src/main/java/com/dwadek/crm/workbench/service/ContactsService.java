@@ -12,4 +12,6 @@ public interface ContactsService {
     PaginationVO<ContactsWithCname> pageList(Map<String, Object> map);
 
     boolean save(Contacts c);
+
+    Map<String, Object> getUserListAndContacts(String id);
 }

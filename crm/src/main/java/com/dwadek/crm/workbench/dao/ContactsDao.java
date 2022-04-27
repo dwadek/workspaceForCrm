@@ -14,4 +14,5 @@ public interface ContactsDao {
 
     List<ContactsWithCname> getContactsListByCondition(Map<String, Object> map);
 
+    Contacts getById(String id);
 }

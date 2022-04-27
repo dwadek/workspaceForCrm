@@ -5,12 +5,29 @@
 
 <mapper namespace="com.dwadek.crm.workbench.dao.ContactsDao">
 
+    <select id="getById" resultType="Contacts">
+        select * from tbl_contacts where id=#{id}
+    </select>
 
 
     <select id="getContactsListByCondition" resultType="ContactsWithCname">
         select
 
+        c.id,
         c.fullname,
+        c.customerId,
+        c.address,
+        c.appellation,
+        c.contactSummary,
+        c.createBy,
+        c.createTime,
+        c.editBy,
+        c.editTime,
+        c.description,
+        c.email,
+        c.job,
+        c.mphone,
+        c.nextContactTime,
         u.name as owner,
         c1.name as name,
         c.birth,
