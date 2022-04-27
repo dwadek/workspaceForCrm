@@ -131,7 +131,9 @@
                  */
 
                 var possibility = json[stage];
-                alert(possibility);
+                //alert(possibility);
+                $("#create-possibility").val(possibility);
+
             })
 
         });

@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         //判断ip地址
         String allowIps = user.getAllowIps();
-        if (allowIps.contains(ip)) {
+        if (!allowIps.contains(ip)) {
             throw new LoginException("ip地址受限 ");
         }
 

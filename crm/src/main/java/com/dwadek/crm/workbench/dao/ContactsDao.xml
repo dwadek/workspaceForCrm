@@ -5,7 +5,9 @@
 
 <mapper namespace="com.dwadek.crm.workbench.dao.ContactsDao">
 
-    <select id="getContactsListByCondition" resultType="Contacts">
+
+
+    <select id="getContactsListByCondition" resultType="ContactsWithCname">
         select
 
         c.fullname,

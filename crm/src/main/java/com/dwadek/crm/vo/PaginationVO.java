@@ -7,20 +7,14 @@ public class PaginationVO<T> {
     private int total;
     private List<T> dataList;
 
+
     public PaginationVO() {
     }
 
-    public PaginationVO(int total, List<T> dataList) {
+    public PaginationVO(int total, List<T> dataList,String name) {
         this.total = total;
         this.dataList = dataList;
-    }
 
-    @Override
-    public String toString() {
-        return "PaginationVO{" +
-                "total=" + total +
-                ", dataList=" + dataList +
-                '}';
     }
 
     public int getTotal() {
@@ -38,4 +32,6 @@ public class PaginationVO<T> {
     public void setDataList(List<T> dataList) {
         this.dataList = dataList;
     }
+
+
 }
