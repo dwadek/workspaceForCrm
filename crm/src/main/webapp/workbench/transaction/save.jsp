@@ -138,8 +138,17 @@
 
             //为保存按钮绑定事件，执行交易添加操作
             $("#saveBtn").click(function () {
+                if($("#create-transactionName").val()==""){
+                    alert("请输入数据！");
+                    return false;
+                }
                 //发出传统请求，提交表单
                 $("#tranForm").submit();
+            })
+
+            $("#backBtn").click(function () {
+                window.location.href = "workbench/transaction/index.jsp";
+
             })
 
         });
@@ -254,7 +263,7 @@
     <h3>创建交易</h3>
     <div style="position: relative; top: -40px; left: 70%;">
         <button type="button" class="btn btn-primary" id="saveBtn">保存</button>
-        <button type="button" class="btn btn-default">取消</button>
+        <button type="button" class="btn btn-default" id="backBtn">取消</button>
     </div>
     <hr style="position: relative; top: -40px;">
 </div>
