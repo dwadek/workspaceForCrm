@@ -10,12 +10,14 @@ import com.dwadek.crm.utils.UUIDUtil;
 import com.dwadek.crm.vo.PaginationVO;
 import com.dwadek.crm.workbench.domain.Clue;
 import com.dwadek.crm.workbench.domain.Tran;
+import com.dwadek.crm.workbench.domain.TranHistory;
 import com.dwadek.crm.workbench.service.ClueService;
 import com.dwadek.crm.workbench.service.CustomerService;
 import com.dwadek.crm.workbench.service.TranService;
 import com.dwadek.crm.workbench.service.impl.ClueServiceImpl;
 import com.dwadek.crm.workbench.service.impl.CustomerServiceImpl;
 import com.dwadek.crm.workbench.service.impl.TranServiceImpl;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,9 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet({"/workbench/transaction/add.do","/workbench/transaction/getCustomerName.do",
-        "/workbench/transaction/save.do","/workbench/transaction/detail.do",
-        "/workbench/transaction/pageList.do"})
+@WebServlet({"/workbench/transaction/add.do", "/workbench/transaction/getCustomerName.do",
+        "/workbench/transaction/save.do", "/workbench/transaction/detail.do",
+        "/workbench/transaction/pageList.do", "/workbench/transaction/getHistoryListByTranId.do"})
 public class TranController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,15 +40,42 @@ public class TranController extends HttpServlet {
 
         if ("/workbench/transaction/add.do".equals(path)) {
             add(request, response);
-        }else if("/workbench/transaction/getCustomerName.do".equals(path)){
-            getCustomerName(request,response);
-        }else if("/workbench/transaction/save.do".equals(path)){
-            save(request,response);
-        }else if("/workbench/transaction/detail.do".equals(path)){
-            detail(request,response);
-        }else if("/workbench/transaction/pageList.do".equals(path)){
-            pageList(request,response);
+        } else if ("/workbench/transaction/getCustomerName.do".equals(path)) {
+            getCustomerName(request, response);
+        } else if ("/workbench/transaction/save.do".equals(path)) {
+            save(request, response);
+        } else if ("/workbench/transaction/detail.do".equals(path)) {
+            detail(request, response);
+        } else if ("/workbench/transaction/pageList.do".equals(path)) {
+            pageList(request, response);
+        } else if ("/workbench/transaction/getHistoryListByTranId.do".equals(path)) {
+            getHistoryListByTranId(request, response);
         }
+    }
+
+    private void getHistoryListByTranId(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("根据交易id取得相应的交易历史");
+
+        String tranId = request.getParameter("tranId");
+
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+
+        List<TranHistory> thList = ts.getHistoryListByTranId(tranId);
+
+        //阶段和可能性之间的对应关系
+        Map<String, String> pMap = (Map<String, String>) this.getServletContext().getAttribute("pMap");
+
+
+        //将交易历史列表遍历
+        for (TranHistory th : thList) {
+            //根据每条交易历史，取出每一个阶段
+            String stage = th.getStage();
+            String possibility = pMap.get(stage);
+            th.setPossibility(possibility);
+        }
+
+        PrintJson.printJsonObj(response, thList);
+
     }
 
     private void pageList(HttpServletRequest request, HttpServletResponse response) {
@@ -94,8 +123,21 @@ public class TranController extends HttpServlet {
 
         Tran t = ts.detail(id);
 
-        request.setAttribute("t",t);
-        request.getRequestDispatcher("/workbench/transaction/detail.jsp").forward(request,response);
+        //处理可能性
+        /*
+           阶段 t
+           阶段和可能性直接的对应关系 pMap
+
+         */
+        String stage = t.getStage();
+        Map<String, String> pMap = (Map<String, String>) this.getServletContext().getAttribute("pMap");
+        String possibility = pMap.get(stage);
+
+        t.setPossibility(possibility);
+
+        request.setAttribute("t", t);
+
+        request.getRequestDispatcher("/workbench/transaction/detail.jsp").forward(request, response);
     }
 
     private void save(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -112,7 +154,7 @@ public class TranController extends HttpServlet {
         String source = request.getParameter("source");
         String activityId = request.getParameter("activityId");
         String contactsId = request.getParameter("contactsId");
-        String createBy = ((User)request.getSession().getAttribute("user")).getName();
+        String createBy = ((User) request.getSession().getAttribute("user")).getName();
         String createTime = DateTimeUtil.getSysTime();
         String description = request.getParameter("description");
         String contactSummary = request.getParameter("contactSummary");
@@ -136,9 +178,9 @@ public class TranController extends HttpServlet {
         t.setNextContactTime(nextContactTime);
 
         TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
-        boolean flag = ts.save(t,customerName);
+        boolean flag = ts.save(t, customerName);
 
-        if(flag){
+        if (flag) {
             response.sendRedirect(request.getContextPath() + "/workbench/transaction/index.jsp");
         }
 
@@ -152,7 +194,7 @@ public class TranController extends HttpServlet {
         CustomerService cs = (CustomerService) ServiceFactory.getService(new CustomerServiceImpl());
 
         List<String> sList = cs.getCustomerName(name);
-        PrintJson.printJsonObj(response,sList);
+        PrintJson.printJsonObj(response, sList);
     }
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -162,7 +204,7 @@ public class TranController extends HttpServlet {
 
         List<User> uList = us.getUserList();
 
-        request.setAttribute("uList",uList);
-        request.getRequestDispatcher("/workbench/transaction/save.jsp").forward(request,response);
+        request.setAttribute("uList", uList);
+        request.getRequestDispatcher("/workbench/transaction/save.jsp").forward(request, response);
     }
 }

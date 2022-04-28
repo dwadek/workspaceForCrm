@@ -113,4 +113,12 @@ public class TranServiceImpl implements TranService {
         return vo;
 
     }
+
+    @Override
+    public List<TranHistory> getHistoryListByTranId(String tranId) {
+
+        List<TranHistory> thList = tranHistoryDao.getHistoryListByTranId(tranId);
+
+        return thList;
+    }
 }
