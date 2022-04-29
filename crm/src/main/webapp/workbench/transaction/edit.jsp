@@ -61,6 +61,12 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				pickerPosition: "top-left"
 			});
 
+            $("#updateBtn").click(function () {
+
+				$("#updateForm").submit();
+
+            })
+
 
 		});
 	</script>
@@ -176,11 +182,14 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		</div>
 		<hr style="position: relative; top: -40px;">
 	</div>
-	<form class="form-horizontal" role="form" style="position: relative; top: -30px;">
+	<form method="post" action="workbench/transaction/update.do" id="updateForm" class="form-horizontal" role="form" style="position: relative; top: -30px;">
+
+		<input type="hidden" id="edit-id" name="id" value="${map.t.id}">
+
 		<div class="form-group">
 			<label for="edit-transactionOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<select class="form-control" id="edit-transactionOwner">
+				<select class="form-control" id="edit-owner" name="owner">
 				  <option></option>
 					<c:forEach items="${map.uList}" var="u">
 						<option value="${u.id}" ${user.id eq u.id ? "selected":""}>${u.name}</option>
@@ -190,18 +199,18 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			</div>
 			<label for="edit-amountOfMoney" class="col-sm-2 control-label">金额</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="edit-amountOfMoney" value="${requestScope.map.t.money}">
+				<input type="text" class="form-control" id="edit-money" name="money" value="${requestScope.map.t.money}">
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="edit-transactionName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="edit-transactionName" value="${requestScope.map.t.name}">
+				<input type="text" class="form-control" id="edit-name" name="name" value="${requestScope.map.t.name}">
 			</div>
 			<label for="edit-expectedClosingDate" class="col-sm-2 control-label">预计成交日期<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control time1" id="edit-expectedClosingDate" value="${requestScope.map.t.expectedDate}">
+				<input type="text" class="form-control time1" id="edit-expectedDate" name="expectedDate" value="${requestScope.map.t.expectedDate}">
 			</div>
 		</div>
 		
@@ -212,7 +221,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			</div>
 			<label for="edit-transactionStage" class="col-sm-2 control-label">阶段<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
-			  <select class="form-control" id="edit-transactionStage">
+			  <select class="form-control" id="edit-stage" name="stage">
 			  	<option></option>
 				  <c:forEach items="${stageList}" var="s">
 					  <option value="${s.value}" ${map.t.stage eq s.value ? "selected":""}>${s.text}</option>
@@ -224,7 +233,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		<div class="form-group">
 			<label for="edit-transactionType" class="col-sm-2 control-label">类型</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<select class="form-control" id="edit-transactionType">
+				<select class="form-control" id="edit-type" name="type">
 				  <option></option>
 					<c:forEach items="${transactionTypeList}" var="tr">
 						<option value="${tr.value}" ${map.t.type eq tr.value ? "selected":""}>${tr.text}</option>
@@ -233,14 +242,14 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			</div>
 			<label for="edit-possibility" class="col-sm-2 control-label">可能性</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="edit-possibility" value="${map.t.possibility}">
+				<input type="text" class="form-control" id="edit-possibility" name="possibility" value="${map.t.possibility}">
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="edit-clueSource" class="col-sm-2 control-label">来源</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<select class="form-control" id="edit-clueSource">
+				<select class="form-control" id="edit-source" name="source">
 				  <option></option>
 					<c:forEach items="${sourceList}" var="s">
 						<option value="${s.value}" ${map.t.source eq s.value ? "selected":""}>${s.text}</option>
@@ -249,35 +258,35 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			</div>
 			<label for="edit-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findMarketActivity"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="edit-activitySrc" value="${requestScope.map.t.activityId}">
+				<input type="text" class="form-control" id="edit-activityName" name="activityName" value="${requestScope.map.t.activityId}">
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="edit-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findContacts"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="edit-contactsName" value="${requestScope.map.t.contactsId}">
+				<input type="text" class="form-control" id="edit-contactsName" name="contactsName" value="${requestScope.map.t.contactsId}">
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="create-describe" class="col-sm-2 control-label">描述</label>
 			<div class="col-sm-10" style="width: 70%;">
-				<textarea class="form-control" rows="3" id="create-describe">${requestScope.map.t.description}</textarea>
+				<textarea class="form-control" rows="3" id="edit-description" name="description">${requestScope.map.t.description}</textarea>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="create-contactSummary" class="col-sm-2 control-label">联系纪要</label>
 			<div class="col-sm-10" style="width: 70%;">
-				<textarea class="form-control" rows="3" id="create-contactSummary">${requestScope.map.t.contactSummary}</textarea>
+				<textarea class="form-control" rows="3" id="edit-contactSummary" name="contactSummary">${requestScope.map.t.contactSummary}</textarea>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control time2" id="create-nextContactTime" value="${requestScope.map.t.nextContactTime}">
+				<input type="text" class="form-control time2" id="edit-nextContactTime" value="${requestScope.map.t.nextContactTime}">
 			</div>
 		</div>
 		
