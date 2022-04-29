@@ -28,10 +28,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @WebServlet({"/workbench/transaction/add.do", "/workbench/transaction/getCustomerName.do",
         "/workbench/transaction/save.do", "/workbench/transaction/detail.do",
-        "/workbench/transaction/pageList.do", "/workbench/transaction/getHistoryListByTranId.do"})
+        "/workbench/transaction/pageList.do", "/workbench/transaction/getHistoryListByTranId.do",
+        "/workbench/transaction/getUserListandTran.do"})
 public class TranController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +52,19 @@ public class TranController extends HttpServlet {
             pageList(request, response);
         } else if ("/workbench/transaction/getHistoryListByTranId.do".equals(path)) {
             getHistoryListByTranId(request, response);
+        }else if ("/workbench/transaction/getUserListandTran.do".equals(path)) {
+            getUserListandTran(request, response);
         }
+    }
+
+    private void getUserListandTran(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String id = request.getParameter("id");
+
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+        Map<String,Object> map = ts.getUserListandTran(id);
+        request.setAttribute("map",map);
+        request.getRequestDispatcher("/workbench/transaction/edit.jsp").forward(request,response);
     }
 
     private void getHistoryListByTranId(HttpServletRequest request, HttpServletResponse response) {
