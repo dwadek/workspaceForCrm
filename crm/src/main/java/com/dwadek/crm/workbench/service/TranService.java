@@ -16,4 +16,6 @@ public interface TranService {
     PaginationVO<Tran> pageList(Map<String, Object> map);
 
     List<TranHistory> getHistoryListByTranId(String tranId);
+
+    Map<String, Object> getUserListandTran(String id);
 }

@@ -27,8 +27,46 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 	$(function(){
 
 		pageList(1,3);
-		
-		
+
+		//为全选的复选框绑定事件，触发全选操作
+		$("#qx").click(function () {
+			$("input[name=xz]").prop("checked", this.checked);
+		})
+
+		$("#tranBody").on("click", $("input[name=xz]"), function () {
+			$("#qx").prop("checked", $("input[name=xz]").length == $("input[name=xz]:checked").length);
+		})
+
+		$("#searchBtn").click(function () {
+
+			$("#hidden-name").val($.trim($("#search-name").val()));
+			$("#hidden-source").val($.trim($("#search-source").val()));
+			$("#hidden-owner").val($.trim($("#search-owner").val()));
+			$("#hidden-type").val($.trim($("#search-type").val()));
+			$("#hidden-stage").val($.trim($("#search-stage").val()));
+			$("#hidden-customerName").val($.trim($("#search-customerName").val()));
+			$("#hidden-contactsName").val($.trim($("#search-contactsName").val()));
+
+			pageList(1,5);
+
+
+		})
+
+		$("#editBtn").click(function () {
+			var $xz = $("input[name=xz]:checked");
+			if ($xz.length == 0) {
+				alert("请选择需要修改的记录");
+			}else if($xz.length>1){
+				alert("只能选择一条记录进行修改");
+			}else {
+				var id = $xz.val();
+				window.location.href="workbench/transaction/getUserListandTran.do?id="+id+"";
+			}
+
+
+		})
+
+
 	});
 
 	function pageList(pageNo, pageSize) {
@@ -223,7 +261,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" onclick="window.location.href='workbench/transaction/add.do';"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" onclick="window.location.href='workbench/transaction/edit.jsp';"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button type="button" class="btn btn-default" id="editBtn" ><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
@@ -233,7 +271,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
+							<td><input type="checkbox" id="qx"/></td>
 							<td>名称</td>
 							<td>客户名称</td>
 							<td>阶段</td>

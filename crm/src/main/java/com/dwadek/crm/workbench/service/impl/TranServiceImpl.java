@@ -1,5 +1,7 @@
 package com.dwadek.crm.workbench.service.impl;
 
+import com.dwadek.crm.settings.dao.UserDao;
+import com.dwadek.crm.settings.domain.User;
 import com.dwadek.crm.utils.DateTimeUtil;
 import com.dwadek.crm.utils.SqlSessionUtil;
 import com.dwadek.crm.utils.UUIDUtil;
@@ -14,6 +16,7 @@ import com.dwadek.crm.workbench.domain.TranHistory;
 import com.dwadek.crm.workbench.service.CustomerService;
 import com.dwadek.crm.workbench.service.TranService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ public class TranServiceImpl implements TranService {
     private TranDao tranDao = SqlSessionUtil.getSqlSession().getMapper(TranDao.class);
     private TranHistoryDao tranHistoryDao = SqlSessionUtil.getSqlSession().getMapper(TranHistoryDao.class);
     private CustomerDao customerDao = SqlSessionUtil.getSqlSession().getMapper(CustomerDao.class);
+    private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
+
 
     @Override
     public boolean save(Tran t, String customerName) {
@@ -120,5 +125,18 @@ public class TranServiceImpl implements TranService {
         List<TranHistory> thList = tranHistoryDao.getHistoryListByTranId(tranId);
 
         return thList;
+    }
+
+    @Override
+    public Map<String, Object> getUserListandTran(String id) {
+        List<User> uList = userDao.getUserList();
+        Tran t = tranDao.getById(id);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("uList",uList);
+        map.put("t",t);
+
+
+        return map;
     }
 }
