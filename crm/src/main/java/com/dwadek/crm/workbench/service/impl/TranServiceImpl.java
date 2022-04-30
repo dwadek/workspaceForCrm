@@ -139,4 +139,34 @@ public class TranServiceImpl implements TranService {
 
         return map;
     }
+
+    @Override
+    public boolean changeStage(Tran t,String oldStage) {
+
+        boolean flag = true;
+
+        //改变交易阶段
+        int count1 = tranDao.changeStage(t);
+        if(count1!=1){
+            flag = false;
+        }
+
+        //交易阶段改变后，生成一条交易历史
+        TranHistory th = new TranHistory();
+        th.setId(UUIDUtil.getUUID());
+        th.setCreateBy(t.getEditBy());
+        th.setCreateTime(t.getEditTime());
+        th.setExpectedDate(t.getExpectedDate());
+        th.setMoney(t.getMoney());
+        th.setTranId(t.getId());
+        th.setStage(oldStage);
+
+        //添加交易历史
+        int count2 = tranHistoryDao.save(th);
+        if(count2!=1){
+            flag = false;
+        }
+
+        return flag;
+    }
 }

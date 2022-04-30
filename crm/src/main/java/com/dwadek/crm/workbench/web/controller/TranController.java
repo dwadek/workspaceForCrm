@@ -33,7 +33,8 @@ import java.util.Objects;
 @WebServlet({"/workbench/transaction/add.do", "/workbench/transaction/getCustomerName.do",
         "/workbench/transaction/save.do", "/workbench/transaction/detail.do",
         "/workbench/transaction/pageList.do", "/workbench/transaction/getHistoryListByTranId.do",
-        "/workbench/transaction/getUserListandTran.do","/workbench/transaction/update.do"})
+        "/workbench/transaction/getUserListandTran.do","/workbench/transaction/update.do",
+        "/workbench/transaction/changeStage.do"})
 public class TranController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,7 +57,46 @@ public class TranController extends HttpServlet {
             getUserListandTran(request, response);
         }else if ("/workbench/transaction/update.do".equals(path)) {
             update(request, response);
+        }else if ("/workbench/transaction/changeStage.do".equals(path)) {
+            changeStage(request, response);
         }
+    }
+
+    private void changeStage(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行更新图标的操作");
+
+        String id = request.getParameter("id");
+        String stage = request.getParameter("stage");
+        String money = request.getParameter("money");
+        String expectedDate = request.getParameter("expectedDate");
+        String editBy = ((User)request.getSession().getAttribute("user")).getName();
+        String editTime = DateTimeUtil.getSysTime();
+
+        String oldStage = request.getParameter("oldStage");
+
+
+        Tran t = new Tran();
+        t.setId(id);
+        t.setStage(stage);
+        t.setMoney(money);
+        t.setExpectedDate(expectedDate);
+        t.setEditBy(editBy);
+        t.setEditTime(editTime);
+
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+        boolean flag = ts.changeStage(t,oldStage);
+
+        Map<String, String> pMap = (Map<String, String>) this.getServletContext().getAttribute("pMap");
+        String possibility = pMap.get(stage);
+        t.setPossibility(possibility);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("t",t);
+        map.put("success",flag);
+
+        PrintJson.printJsonObj(response,map);
+
+
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) {

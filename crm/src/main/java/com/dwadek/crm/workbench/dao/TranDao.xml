@@ -5,6 +5,11 @@
 
 <mapper namespace="com.dwadek.crm.workbench.dao.TranDao">
 
+    <update id="changeStage">
+        update tbl_tran set stage=#{stage},editBy=#{editBy},editTime=#{editTime}
+        where id=#{id}
+    </update>
+
     <select id="getById" resultType="Tran">
         select
 
