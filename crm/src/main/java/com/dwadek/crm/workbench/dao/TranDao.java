@@ -18,4 +18,8 @@ public interface TranDao {
     Tran getById(String id);
 
     int changeStage(Tran t);
+
+    int getTotal();
+
+    List<Map<String, Object>> getCharts();
 }

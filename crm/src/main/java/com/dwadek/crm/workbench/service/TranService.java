@@ -20,4 +20,6 @@ public interface TranService {
     Map<String, Object> getUserListandTran(String id);
 
     boolean changeStage(Tran t,String oldStage);
+
+    Map<String, Object> getCharts();
 }

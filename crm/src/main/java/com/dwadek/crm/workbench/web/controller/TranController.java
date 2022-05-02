@@ -34,7 +34,7 @@ import java.util.Objects;
         "/workbench/transaction/save.do", "/workbench/transaction/detail.do",
         "/workbench/transaction/pageList.do", "/workbench/transaction/getHistoryListByTranId.do",
         "/workbench/transaction/getUserListandTran.do","/workbench/transaction/update.do",
-        "/workbench/transaction/changeStage.do"})
+        "/workbench/transaction/changeStage.do","/workbench/transaction/getCharts.do"})
 public class TranController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -59,7 +59,19 @@ public class TranController extends HttpServlet {
             update(request, response);
         }else if ("/workbench/transaction/changeStage.do".equals(path)) {
             changeStage(request, response);
+        }else if ("/workbench/transaction/getCharts.do".equals(path)) {
+            getCharts(request, response);
         }
+    }
+
+    private void getCharts(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("取得交易阶段数量统计图的数据");
+
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+        Map<String,Object> map = ts.getCharts();
+        PrintJson.printJsonObj(response,map);
+
+
     }
 
     private void changeStage(HttpServletRequest request, HttpServletResponse response) {

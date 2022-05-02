@@ -169,4 +169,22 @@ public class TranServiceImpl implements TranService {
 
         return flag;
     }
+
+    @Override
+    public Map<String, Object> getCharts() {
+
+        //取得total
+        int total = tranDao.getTotal();
+
+        //取得dataList
+        List<Map<String,Object>> dataList = tranDao.getCharts();
+
+        //将total和dataList存到map中
+        Map<String,Object> map = new HashMap<>();
+        map.put("total",total);
+        map.put("dataList",dataList);
+
+        //返回map
+        return map;
+    }
 }
