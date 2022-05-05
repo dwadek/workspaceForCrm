@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--读取属性文件（jdbc.properties）
+        属性：
+            resources：从resources目录下找指定 名称的文件加载
+            url：使用绝对路径加载属性文件
+    -->
+    <properties resource="jdbc.properties"></properties>
+
+    <!--配置数据库的环境变量（数据库连接配置）
+        default:使用下面额environment标签的id属性进行指定配置
+    -->
+    <environments default="development">
+        <!--开发时在公司使用的数据库配置-->
+        <environment id="development">
+            <!--配置事务管理器
+                type:指定事物管理的方式
+                    JDBC:事物的控制交给程序员处理
+                    MANAGED:由容器（Spring）来管理事务
+            -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--配置数据源
+                type：指定不用的配置方式
+                    JNDI：java命名目录接口，在服务器端进行数据库连接池的管理
+                    POOLED:使用数据库连接池
+                    UNPOOLED：不使用数据库连接池
+            -->
+            <dataSource type="POOLED">
+                <!--配置数据库中的参数-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.user}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <!--&lt;!&ndash;在家使用的数据库配置&ndash;&gt;
+        <environment id="home">
+            <transactionManager type=""></transactionManager>
+            <dataSource type=""></dataSource>
+        </environment>
+
+        &lt;!&ndash;上线后的数据库配置&ndash;&gt;
+        <environment id="online">
+            <transactionManager type=""></transactionManager>
+            <dataSource type=""></dataSource>
+        </environment>-->
+    </environments>
+
+    <!--注册mapper.xml文件-->
+
+</configuration>
